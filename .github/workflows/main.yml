@@ -9,7 +9,7 @@ jobs:
       - name: docker login
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: docker build
-        run: docker built -t tmp .
+        run: docker build -t tmp .
       - name: docker tag
         run: |
           docker tag tmp ${{ secrets.DOCKER_USERNAME}}/tmp:${{ github.sha }}
