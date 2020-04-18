@@ -9,5 +9,6 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v3
         with:
           image: tmp/tmpdocker
+          registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
