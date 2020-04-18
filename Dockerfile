@@ -1,3 +1,2 @@
-FROM alpine:3.10
-COPY entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+FROM continuumio/miniconda3
+RUN conda install -y numpy
