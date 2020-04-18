@@ -1,0 +1,13 @@
+name: publish
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: push to registry
+        uses: mr-smithers-excellent/docker-build-push@v3
+        with:
+          image: tmp/tmpdocker
+          username: ${{ github.actor }}
+          password: ${{ secrests.GITHUB_TOKEN }}
