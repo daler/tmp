@@ -1,2 +1,3 @@
 FROM continuumio/miniconda3
-RUN conda install -y numpy
+COPY requirements.txt /requirements.txt
+RUN conda install --file /requirements.txt --channel conda-forge --channel bioconda
