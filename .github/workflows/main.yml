@@ -19,3 +19,11 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME}}/tmp:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME}}/tmp:latest
 
+  docker-pull:
+    needs: build-and-push
+    steps:
+      - uses: actions/checkout@v2
+      - name: run-container
+        run: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/tmp:latest
+          docker run ${{ secrets.DOCKER_USERNAME }}/tmp:latest "ls -l"
