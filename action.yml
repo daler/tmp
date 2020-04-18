@@ -1,5 +1,0 @@
-name: 'tmp'
-description: 'test docker'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
