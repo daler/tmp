@@ -27,4 +27,4 @@ jobs:
       - name: run-container
         run: |
           docker pull ${{ secrets.DOCKER_USERNAME }}/tmp:latest
-          docker run ${{ secrets.DOCKER_USERNAME }}/tmp:latest "ls -l"
+          docker run ${{ secrets.DOCKER_USERNAME }}/tmp:latest ls -l
