@@ -14,7 +14,7 @@ jobs:
       - name: get changed files
         id: getfile
         run: |
-          if git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -q requirements.txt; then
+          if git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -Eq "requirements.txt|Dockerfile"; then
             FOUND=1
           else
             FOUND=0
