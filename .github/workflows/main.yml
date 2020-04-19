@@ -73,7 +73,6 @@ jobs:
 
   docker-pull:
     runs-on: ubuntu-latest
-    if: needs.check-reqs.outputs.needs-build == true
     needs: check-reqs
     steps:
       - uses: actions/checkout@v2
