@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-reqs
     steps:
-      - run: [[ ${{ needs.check-reqs.outputs.needs-build }} == "true" ]] && (echo "should build"; exit 1)
+    - run: [[ ${{ needs.check-reqs.outputs.needs-build }} == "true" ]] && (echo "should build"; exit 1)
 
   build-and-push:
     runs-on: ubuntu-latest
