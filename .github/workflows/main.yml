@@ -8,11 +8,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          # need this for git diff-tree to work below
           fetch-depth: 3
       - id: check
         run: |
-          git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
-          #echo "::set-output name=changed::false"
+          if git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -q requirements.txt; then
+            echo "::set-output name=changed::true"
+          fi
 
   build-and-push:
     runs-on: ubuntu-latest
