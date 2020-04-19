@@ -7,9 +7,11 @@ jobs:
       needs-build: ${{ steps.check.outputs.changed }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 3
       - id: check
         run: |
-          git show --name-only ${{ github.sha }} | grep requirements.txt
+          git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
           #echo "::set-output name=changed::false"
 
   build-and-push:
@@ -56,6 +58,7 @@ jobs:
 
   docker-pull:
     runs-on: ubuntu-latest
+    if: needs.check-reqs.outputs.needs-build == true
     needs: check-reqs
     steps:
       - uses: actions/checkout@v2
