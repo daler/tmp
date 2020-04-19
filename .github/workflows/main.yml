@@ -22,7 +22,7 @@ jobs:
     name: Build and push docker image
     steps:
       - name: echo output
-        run |
+        run: |
           echo ${{ steps.check-reqs.outputs.changed }}
 
       # On the default image used by GitHub Actions, there is 13 GB available.
