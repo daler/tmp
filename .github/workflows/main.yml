@@ -1,11 +1,10 @@
-on: [push]
+on:
+  push:
+    paths:
+      - requirements.txt
 
 jobs:
   build-and-push:
-    on:
-      push:
-        paths:
-          - requirements.txt
 
     runs-on: ubuntu-latest
     name: Build and push docker image
