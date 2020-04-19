@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-reqs
     steps:
-    - run: echo ${{ needs.check-reqs.outputs.needs-build }}
+    - run: if \[ ${{ needs.check-reqs.outputs.needs-build }} == "true" \]; then echo "yes"; exit 1; fi
 
   build-and-push:
     runs-on: ubuntu-latest
