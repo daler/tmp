@@ -12,14 +12,19 @@ jobs:
         run: |
           if git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -q requirements.txt; then
             echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
           fi
 
   build-and-push:
     runs-on: ubuntu-latest
     needs: check-reqs
-    if: needs.check-reqs.changed == true
     name: Build and push docker image
     steps:
+      - name: echo output
+        run |
+          echo ${{ steps.check-reqs.outputs.changed }}
+
       # On the default image used by GitHub Actions, there is 13 GB available.
       # When building the docker container, we use up all of this. Based on
       # some suggestions from [1] we remove some packages and docker images
