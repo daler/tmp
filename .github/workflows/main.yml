@@ -29,11 +29,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-reqs
     name: Build and push docker image
-    if: needs.check-reqs.outputs.found
+    if: needs.check-reqs.outputs.found == 1
     steps:
       - name: echo output
         run: |
-          echo ${{ steps.check.outputs.changed }}
+          echo ${{ needs.check-reqs.outputs.found }}
 
       # On the default image used by GitHub Actions, there is 13 GB available.
       # When building the docker container, we use up all of this. Based on
