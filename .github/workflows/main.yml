@@ -2,10 +2,25 @@ on: [push]
 
 jobs:
   build-and-push:
+    on:
+      push:
+        paths:
+          - requirements.txt
+
     runs-on: ubuntu-latest
     name: Build and push docker image
     steps:
-      # https://github.community/t5/GitHub-Actions/BUG-Strange-quot-No-space-left-on-device-quot-IOExceptions-on/td-p/46101/page/2
+      # On the default image used by GitHub Actions, there is 13 GB available.
+      # When building the docker container, we use up all of this. Based on
+      # some suggestions from [1] we remove some packages and docker images
+      # that are pre-loaded.
+      #
+      # This gets about 60 GB free rather than 13 GB. The full disk is 85 GB,
+      # so we're doing pretty well, but if you need to rm more, the full list
+      # is at [2]
+      #
+      # [1] https://github.community/t5/GitHub-Actions/BUG-Strange-quot-No-space-left-on-device-quot-IOExceptions-on/td-p/46101/page/2
+      # [2] https://github.com/actions/virtual-environments/blob/master/images/linux/Ubuntu1804-README.md
       - name: clean
         run: |
           df -h
