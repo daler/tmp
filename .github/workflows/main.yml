@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-reqs
     name: Build and push docker image
-    if: 0
+    if: steps.getfiles.outputs.files
     steps:
       - name: echo output
         run: |
