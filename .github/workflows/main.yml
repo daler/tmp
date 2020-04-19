@@ -6,6 +6,7 @@ jobs:
     outputs:
       needs-build: ${{ steps.check.outputs.changed }}
     steps:
+      - uses: actions/checkout@v2
       - id: check
         run: |
           [[ $(git diff-tree --no-commit-id --name-only master | grep -q .github) ]] && echo "::set-output name=changed::true"
