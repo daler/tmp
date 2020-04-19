@@ -12,7 +12,7 @@ jobs:
       - name: get changed files
         id: getfile
         run: |
-          FOUND=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)
+          FOUND=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -q requirements.txt)
           echo "::set-output name=files::$FOUND"
 
       - name: echo output
