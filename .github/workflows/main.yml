@@ -17,6 +17,7 @@ jobs:
 
   build-and-push:
     runs-on: ubuntu-latest
+    needs: testrun
     name: Build and push docker image
     steps:
       # On the default image used by GitHub Actions, there is 13 GB available.
