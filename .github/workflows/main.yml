@@ -8,14 +8,15 @@ jobs:
         with:
           # need this for git diff-tree to work below
           fetch-depth: 3
-      - id: check
-        run: |
-          if git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -q requirements.txt; then
-            echo "::set-output name=changed::true"
-          else
-            echo "::set-output name=changed::false"
-          fi
 
+      - name: get changed files
+        id: getfile
+        run: |
+          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)"
+
+      - name: echo output
+        run: |
+          echo ${{ steps.getfile.outputs.files }}
 
   build-and-push:
     runs-on: ubuntu-latest
