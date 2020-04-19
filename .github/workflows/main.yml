@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
       - id: check
         run: |
-          [[ $(git diff-tree --no-commit-id --name-only master | grep -q .github) ]]
+          git diff-tree --no-commit-id --name-only master | grep -q .github
           echo $?
           echo "::set-output name=changed::true"
 
