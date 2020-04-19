@@ -1,0 +1,11 @@
+on: [push]
+jobs:
+  docker-pull:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: run-container
+        run: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/tmp:latest
+          docker run ${{ secrets.DOCKER_USERNAME }}/tmp:latest ls -l
