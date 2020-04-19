@@ -5,14 +5,13 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and push docker image
     steps:
-      # https://github.com/jens-maus/RaspberryMatic/blob/d5044bef3307bc61166377c162569de1a61cf332/.github/workflows/ci.yml#L34-L40
+      # https://github.community/t5/GitHub-Actions/BUG-Strange-quot-No-space-left-on-device-quot-IOExceptions-on/td-p/46101/page/2
       - name: clean
         run: |
           df -h
-          sudo swapoff -a
-          sudo rm -f /swapfile
-          sudo apt clean
-          docker rmi $(docker image ls -aq)
+          sudo swapoff /swapfile 
+          sudo rm -rf /swapfile /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          sudo apt-get remove -y php7*
           df -h
       - uses: actions/checkout@v2
       - name: docker login
