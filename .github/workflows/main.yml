@@ -29,12 +29,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-reqs
     name: Build and push docker image
-    if: needs.check-reqs.outputs.found == 1
     steps:
       - name: echo output
         run: |
           echo ${{ needs.check-reqs.outputs.found }}
-
       # On the default image used by GitHub Actions, there is 13 GB available.
       # When building the docker container, we use up all of this. Based on
       # some suggestions from [1] we remove some packages and docker images
@@ -46,34 +44,31 @@ jobs:
       #
       # [1] https://github.community/t5/GitHub-Actions/BUG-Strange-quot-No-space-left-on-device-quot-IOExceptions-on/td-p/46101/page/2
       # [2] https://github.com/actions/virtual-environments/blob/master/images/linux/Ubuntu1804-README.md
+      - uses: actions/checkout@v2
       - name: clean
         run: |
-          df -h
-          sudo swapoff /swapfile
-          sudo rm -rf /swapfile /usr/share/dotnet /usr/local/lib/android /opt/ghc
-          sudo apt-get remove -y php7* ghc*
-          sudo apt-get autoremove -y
-          sudo apt-get autoclean -y
-          sudo rm -rf /usr/local/lib/android
-          docker rmi $(docker image ls -aq)
-          df -h
-      - uses: actions/checkout@v2
-      - name: docker login
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-      - name: docker build
-        run: docker build -t tmp .
-      - name: docker tag
-        run: |
-          docker tag tmp ${{ secrets.DOCKER_USERNAME}}/tmp:${{ github.sha }}
-          docker tag tmp ${{ secrets.DOCKER_USERNAME}}/tmp:latest
-      - name: docker push
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME}}/tmp:${{ github.sha }}
-          docker push ${{ secrets.DOCKER_USERNAME}}/tmp:latest
+          if [[ ${{ needs.check-reqs.outputs.found }} == 1 ]]; then
+            df -h
+            sudo swapoff /swapfile
+            sudo rm -rf /swapfile /usr/share/dotnet /usr/local/lib/android /opt/ghc
+            sudo apt-get remove -y php7* ghc*
+            sudo apt-get autoremove -y
+            sudo apt-get autoclean -y
+            sudo rm -rf /usr/local/lib/android
+            docker rmi $(docker image ls -aq)
+            df -h
+
+            echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+            docker build -t tmp .
+            docker tag tmp ${{ secrets.DOCKER_USERNAME}}/tmp:${{ github.sha }}
+            docker tag tmp ${{ secrets.DOCKER_USERNAME}}/tmp:latest
+            docker push ${{ secrets.DOCKER_USERNAME}}/tmp:${{ github.sha }}
+            docker push ${{ secrets.DOCKER_USERNAME}}/tmp:latest
+          fi
 
   docker-pull:
     runs-on: ubuntu-latest
-    needs: check-reqs
+    needs: build-and-push
     steps:
       - uses: actions/checkout@v2
       - name: run-container
